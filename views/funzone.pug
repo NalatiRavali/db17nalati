@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  - let funzones = [{funzoneType:"For Kids", funzonePrice: 30, funzoneLocation:"Chicago"},{funzoneType:"For Elders", funzonePrice: 50, funzoneLocation:"New York"},{funzoneType:"For Senior Citizens", funzonePrice: 100, funzoneLocation:"Maryville"}]
+  div(class="container-fluid mt-3")
+  div(class="row")
+    each funzone,index in funzones
+        div(class="col-sm-4"  onclick=`buy(${index})`) #{funzone.funzoneType} - #{funzone.funzonePrice} - #{funzone.funzoneLocation} 
+
+    script.
+
+      function buy(itemNo)
+      {
+        alert(`You purchased Item ${itemNo+1}`)
+      } 

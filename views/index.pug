@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  p love myself.
+
+
+  button(type="button", class="btn btn-secondary", onclick="update()") Press Me for the contents
+ 
+
+  p 
+  div(id="target") Display
+
+  script.
+    var client_count=0;
+    function update(){
+      client_count+=1;
+
+      document.getElementById("target").innerHTML="Value Now "+client_count  ;
+    } 
+
+  a(href="funzone") Go to Fun Zone Page 
