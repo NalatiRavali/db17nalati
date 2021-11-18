@@ -1,5 +1,5 @@
 {
-  "name": "fwb17nalati",
+  "name": "db17nalati",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
     "pug": "^3.0.2"
   },
   "main": "app.js",
-  "author": "ravali",
+  "author": "",
   "license": "ISC",
   "description": ""
 }

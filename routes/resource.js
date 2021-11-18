@@ -1,40 +1,33 @@
 var express = require('express'); 
 var router = express.Router(); 
- 
-// Require controller modules. 
+
+// Require controller modules.
 var api_controller = require('../controllers/api'); 
-var costume_controller = require('../controllers/funzone'); 
+var flight_controller = require('../controllers/flights'); 
  
 /// API ROUTE /// 
- 
 // GET resources base. 
-router.get('/', function(req, res) { 
-    res.write('['); 
-    res.write('{"resource":"costumes", '); 
-    res.write('  "verbs":["GET","PUT", "DELETE"] '); 
-    res.write('}'); 
-    res.write(']') 
-    res.send(); 
-});
-
-router.get('/costumes', costume_controller.costume_list);
-
+router.get('/', api_controller.api); 
  
 /// COSTUME ROUTES /// 
  
 // POST request for creating a Costume.  
-router.post('/costumes', costume_controller.costume_create_post); 
+router.post('/flights', flight_controller.flight_create_post); 
  
 // DELETE request to delete Costume. 
-router.delete('/costumes/:id', costume_controller.costume_delete); 
+router.delete('/flights/:id',flight_controller.flight_delete); 
  
 // PUT request to update Costume. 
-router.put('/costumes/:id', 
-costume_controller.costume_update_put); 
+router.put('/flights/:id',
+flight_controller.flight_update_put); 
  
 // GET request for one Costume. 
-router.get('/costumes/:id', costume_controller.costume_detail); 
+router.get('/flights/:id', flight_controller.flight_detail);
  
-// GET request for list of all Costume items. 
- 
+router.get('/flights/:id', flight_controller.flight_view_one_Page); 
+// GET request for list of all Costume items.
+router.get('/flights', flight_controller.flight_view_all_Page); 
+
+
+
 module.exports = router; 

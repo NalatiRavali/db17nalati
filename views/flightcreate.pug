@@ -1,0 +1,34 @@
+extends layout 
+ 
+block content 
+  h1= title 
+ 
+  form(id='FlightForm', action="/resource/flights", method="POST") 
+    div.form-group 
+        label.costumeAttr(for='flightType') Flight type 
+        input#costume_type(type='text', name='flightType') 
+    div.form-group 
+        label.costumeAttr(type='number',for='price') Flight Price
+        input#size(type='number', name='size') 
+    div.form-group 
+        label.costumeAttr(for='capacity') Flight capacity 
+        input#cost(type='text', name='capacity') 
+    input(type="submit") 
+ 
+  script. 
+    document.forms['FlightForm'].addEventListener('submit', (event) => { 
+      event.preventDefault(); 
+      // TODO do something here to show user that form is being submitted 
+      fetch(event.target.action, { 
+        method: 'POST', 
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form 
+      }).then((resp) => { 
+        return resp.json(); // or resp.text() or whatever the server sends 
+      }).then((body) => { 
+        alert("Save succeded") 
+        // TODO handle body 
+      }).catch((error) => { 
+        // TODO handle error 
+        alert("Save failed " + error ) 
+      }); 
+    }); 

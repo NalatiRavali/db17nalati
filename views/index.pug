@@ -2,21 +2,19 @@ extends layout
 
 block content
   h1= title
-  p love myself.
-
-
-  button(type="button", class="btn btn-secondary", onclick="update()") Press Me for the contents
- 
-
-  p 
+  p This is my Second Heroku server
+  button(type="button", class="btn btn-success", onClick = "update()") Press Me
+  
+  p
   div(id="target") Display
 
   script.
-    var client_count=0;
+    var client_count = 0;
+
     function update(){
-      client_count+=1;
-
-      document.getElementById("target").innerHTML="Value Now "+client_count  ;
-    } 
-
-  a(href="funzone") Go to Fun Zone Page 
+      client_count = client_count + 1;
+      console.log(client_count);
+      document.getElementById("target").innerHTML = "Value now " + client_count;
+    }
+  
+  a(href="flights") Go to Flights page

@@ -1,0 +1,28 @@
+extends layout 
+ 
+block content 
+  h1= title 
+ 
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let flightID = toShow._id
+    - let flightType = toShow.flightType
+    - let price = toShow.price
+    - let capacity = toShow.capacity
+
+    div 
+    div.row 
+      div(class='costumeAttr mr-3') Flight ID is: 
+      div #{flightID} 
+    div.row 
+      div(class='costumeAttr mr-3') Flight Type is: 
+      div #{flightType} 
+    div.row 
+      div(class='costumeAttr mr-3') Flight Size is: 
+      div #{price} 
+    div.row 
+      div(class='costumeAttr mr-3') Flight Capacity is: 
+      div #{capacity}
+
+  

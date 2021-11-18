@@ -1,81 +1,96 @@
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var funzoneRouter = require('./routes/funzone');
-var addmodsRouter = require('./routes/addmods');
-var selectorRouter = require('./routes/selector');
-const resourceRouter = require("./routes/resource");
-const funZoneRouter = require("./routes/funzone")
-const Costume = require("./models/funzone");
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+var Flights = require("./models/flights");
+
+// Establishing connection to MONGODB
+const connectionString = process.env.MONGO_CON;
+mongoose = require("mongoose");
+
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var flightRouter = require("./routes/flight");
+var addmodsRouter = require("./routes/addmods");
+var selectorRouter = require("./routes/selector");
+var resourceRouter = require("./routes/resource");
+
+// We can seed the collection if needed on server start
+async function recreateDB() {
+  // Delete everything
+  await Flights.deleteMany();
+  let instance1 = new Flights({
+    flightType: "Business",
+    price: 100,
+    capacity: "50 tonns",
+  });
+  instance1.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("First object saved");
+  });
+  let instance2 = new Flights({
+    flightType: "Economy",
+    price: 200,
+    capacity: "150 tonns",
+  });
+  instance2.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("Second object saved");
+  });
+  let instance3 = new Flights({
+    flightType: "First Class",
+    price: 30,
+    capacity: "80 tonns",
+  });
+  instance3.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("Third object saved");
+  });
+}
+let reseed = true;
+if (reseed) {
+  recreateDB();
+}
+
 var app = express();
 
-const connectionString =  process.env.MONGO_CON 
-mongoose = require('mongoose'); 
-mongoose.connect(connectionString,  {useNewUrlParser: true, useUnifiedTopology: true}); 
-
-var db = mongoose.connection; 
- 
-//Bind connection to error event  
-db.on('error', console.error.bind(console, 'MongoDB connection error:')); 
-db.once("open", function(){ 
- console.log("Connection to DB succeeded");
- recreateDB()}); 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/funzone', funzoneRouter);
-app.use('/addmods', addmodsRouter);
-app.use('/selector', selectorRouter);
-app.use("/resource", resourceRouter)
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/flights", flightRouter);
+app.use("/addmods", addmodsRouter);
+app.use("/selector", selectorRouter);
+app.use("/resource", resourceRouter);
+
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
-async function recreateDB(){ 
-  // Delete everything 
-  await Costume.deleteMany(); 
- 
-  let instance1 = new Costume({costume_type:"ghost",  size:'large', cost:25.4}); 
-  let instance2 = new Costume({costume_type:"dog",  size:'large', cost:25.4}); 
-
-  let instance3 = new Costume({costume_type:"chocolate",  size:'large', cost:25.4}); 
-
-  instance1.save( function(err,doc) { 
-      if(err) return console.error(err); 
-      console.log("First object saved") 
-  }); 
-  instance2.save( function(err,doc) { 
-    if(err) return console.error(err); 
-    console.log("First object saved") 
-});
-instance3.save( function(err,doc) { 
-  if(err) return console.error(err); 
-  console.log("First object saved") 
-});
-} 
 module.exports = app;
